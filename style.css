@@ -1,5 +1,9 @@
 @import "dark.css";
 
+:root {
+  color-scheme: dark;
+}
+
 #root {
   color: red;
 }
@@ -25,7 +29,7 @@ header * {
   margin: 0;
 }
 
-main {
+#head-main {
   min-height: 100%;
   height: auto !important;
   height: 100%;
@@ -33,14 +37,30 @@ main {
 }
 
 #spacer {
-  height: 3em;
+  height: 0.25em;
+}
+
+main {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .epi-card {
-  margin: 1em;
+  margin: 3em;
   width: 35ch;
 }
 
 footer {
   height: 3em;
+  margin-top: 0.5em; 
+  margin-bottom: 0.5em;
+}
+
+a {
+  color: rgb(158, 158, 255);
+}
+
+a:visited {
+  color: rgb(208, 173, 240);
 }
