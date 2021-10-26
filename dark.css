@@ -1,0 +1,49 @@
+.dp00 {
+    background-color: rgba(255, 255, 255, 0%);
+    --alpha: 0%
+}
+
+.dp01 {
+    background-color: rgba(255, 255, 255, 5%);
+    --alpha: 5%
+}
+
+.dp02 {
+    background-color: rgba(255, 255, 255, 7%);
+    --alpha: 7%
+}
+
+.dp03 {
+    background-color: rgba(255, 255, 255, 8%);
+    --alpha: 8%
+}
+
+.dp04 {
+    background-color: rgba(255, 255, 255, 9%);
+    --alpha: 9%
+}
+
+.dp06 {
+    background-color: rgba(255, 255, 255, 11%);
+    --alpha: 11%
+}
+
+.dp08 {
+    background-color: rgba(255, 255, 255, 12%);
+    --alpha: 12%
+}
+
+.dp12 {
+    background-color: rgba(255, 255, 255, 14%);
+    --alpha: 14%
+}
+
+.dp16 {
+    background-color: rgba(255, 255, 255, 15%);
+    --alpha: 15%
+}
+
+.dp24 {
+    background-color: rgba(255, 255, 255, 16%);
+    --alpha: 16%
+}
