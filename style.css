@@ -1,3 +1,41 @@
 #root {
   color: red;
 }
+
+html, body {
+  height: 95%;
+}
+
+body {
+  background-color: #121212;
+  color: whitesmoke;
+}
+
+header {
+  background-color: rgba(255, 255, 255, 9%);
+  padding: 1.5em;
+  display: flex;
+  justify-content: center;
+  margin: auto;
+}
+
+header * {
+  display: inline;
+  margin: 0;
+}
+
+main {
+  min-height: 100%;
+  height: auto !important;
+  height: 100%;
+  margin: 0 auto -1em;
+}
+
+#spacer {
+  height: 3em;
+}
+
+footer {
+  background-color: rgba(255, 255, 255, 9%);
+  height: 3em;
+}
