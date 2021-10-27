@@ -36,6 +36,12 @@ header * {
 
 #search > select, #search > input {
   width: 20ch;
+  padding: 0.25ch;
+  margin: 0.25rem;
+}
+
+#search > button {
+  margin: 0.25rem;
 }
 
 #search > h3, #search > p {
@@ -57,12 +63,35 @@ header * {
 main {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-between;
+  justify-content: space-evenly;
 }
 
 .epi-card {
   margin: 3em;
   width: 35ch;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.epi-card .title {
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.epi-card .img-preview {
+  display: flex;
+  justify-content: center;
+}
+
+.epi-card img {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.epi-card .summary {
+  text-align: justify;
 }
 
 footer {
