@@ -1,5 +1,6 @@
 import "./episodes.js";
 //You can edit ALL of the code here
+const allEpisodes = getAllEpisodes();
 var searchBox = document.querySelector('#search-box');
 var selectBox = document.querySelector('#select-box');
 var filterText = document.querySelector('#filter-text');
@@ -7,7 +8,6 @@ var resetSearch = document.querySelector('#search-reset');
 var epiCardCopy;
 
 function setup() {
-  const allEpisodes = getAllEpisodes();
   epiCardCopy = document.querySelector(".epi-card");
   makePageForEpisodes(allEpisodes);
   searchBox.addEventListener('input', filterEpisodes);
@@ -16,23 +16,23 @@ function setup() {
 }
 
 function filterEpisodes(event) {
-  makePageForEpisodes(getAllEpisodes().filter(epi => {
+  makePageForEpisodes(allEpisodes.filter(epi => {
     return epi.name.toLowerCase().includes(event.target.value.toLowerCase()) || epi.summary.toLowerCase().includes(event.target.value.toLowerCase());
   }));
 }
 
 function chooseEpisode(event) {
   if (event.target.value == 0) {
-    makePageForEpisodes(getAllEpisodes());
+    makePageForEpisodes(allEpisodes);
   } else {
-    makePageForEpisodes([getAllEpisodes().find(epi => epi.id == event.target.value)])
+    makePageForEpisodes([allEpisodes.find(epi => epi.id == event.target.value)])
   }
 }
 
 function doSearchReset() {
   selectBox.children[0].selected = 'selected';
   searchBox.value = "";
-  makePageForEpisodes(getAllEpisodes());
+  makePageForEpisodes(allEpisodes);
 }
 
 function makePageForEpisodes(episodeList) {
@@ -42,7 +42,7 @@ function makePageForEpisodes(episodeList) {
   main.innerHTML = "";
   selectBox.innerHTML = "";
 
-  filterText.textContent = `Showing ${episodeList.length} episode(s) out of ${getAllEpisodes().length}`
+  filterText.textContent = `Showing ${episodeList.length} episode(s) out of ${allEpisodes.length}`
 
   episodeList.forEach(epi => {
     let epiCard = epiCardCopy.cloneNode(true);
