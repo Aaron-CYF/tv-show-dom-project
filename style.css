@@ -20,13 +20,27 @@ body {
 header {
   padding: 1.5em;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   margin: auto;
 }
 
 header * {
+  margin: auto;
+}
+
+#search {
+  width: 100%;
+  margin-top: 1em;
+  flex-direction: row;
+}
+
+#search > select, #search > input {
+  width: 20ch;
+}
+
+#search > h3, #search > p {
   display: inline;
-  margin: 0;
+  margin-right: 3ch;
 }
 
 #head-main {
