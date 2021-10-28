@@ -36,8 +36,6 @@ function doSearchReset() {
 }
 
 function makePageForEpisodes(episodeList) {
-  // const rootElem = document.getElementById("root");
-  // rootElem.textContent = `Got ${episodeList.length} episode(s)`;
   let main = document.querySelector('main');
   main.innerHTML = "";
   selectBox.innerHTML = "";
@@ -72,21 +70,5 @@ function makePageForEpisodes(episodeList) {
     
   });
 }
-
-
-
-// window.onload = () => {
-// let episode = getOneEpisode();
-// let epiCard = document.querySelector(".epi-card");
-// let cardTitle = epiCard.querySelector(".title");
-// let cardImage = epiCard.querySelector(".img-preview");
-// let cardSumm = epiCard.querySelector(".summary");
-// let img = document.createElement("img");
-
-// cardTitle.textContent = episode.name;
-// img.src = episode.image.medium;
-// cardImage.append(img);
-// cardSumm.innerHTML = episode.summary;
-// };
 
 window.onload = setup;
