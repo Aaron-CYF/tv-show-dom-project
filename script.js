@@ -1,4 +1,5 @@
 import "./episodes.js";
+import "./shows.js"
 //You can edit ALL of the code here
 const allEpisodes = getAllEpisodes();
 var searchBox = document.querySelector('#search-box');
