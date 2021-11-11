@@ -2,12 +2,12 @@ import "./episodes.js";
 import "./shows.js"
 //You can edit ALL of the code here
 const allEpisodes = getAllEpisodes();
-var searchBox = document.querySelector("#search-box");
-var selectBox = document.querySelector("#select-box");
-var filterText = document.querySelector("#filter-text");
-var resetSearch = document.querySelector("#search-reset");
-var epiCardCopy;
-var showCardCopy;
+let searchBox = document.querySelector("#search-box");
+let selectBox = document.querySelector("#select-box");
+let filterText = document.querySelector("#filter-text");
+let resetSearch = document.querySelector("#search-reset");
+let epiCardCopy;
+let showCardCopy;
 
 function setup() {
   epiCardCopy = document.querySelector(".epi-card");
