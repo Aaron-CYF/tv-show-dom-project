@@ -12,11 +12,6 @@ html, body {
   height: 95%;
 }
 
-body {
-  background-color: #121212;
-  color: whitesmoke;
-}
-
 header {
   padding: 1.5em;
   display: flex;
@@ -94,17 +89,29 @@ main {
   text-align: justify;
 }
 
+.show-card {
+  margin: 2em;
+  padding-top: 1.5rem;
+  padding-bottom: 1.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.show-card .img-preview {
+  width: fit-content;
+}
+
+.show-card .img-preview, .show-card .summary, .show-card details {
+  float: left;
+}
+
+.show-card .summary {
+  width: 50%;
+}
+
 footer {
   height: 3em;
   margin-top: 0.5em; 
   margin-bottom: 0.5em;
-}
-
-a {
-  color: rgb(158, 158, 255);
-}
-
-a:visited {
-  color: rgb(208, 173, 240);
 }
 

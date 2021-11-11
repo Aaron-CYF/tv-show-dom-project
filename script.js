@@ -1,6 +1,10 @@
 import "./episodes.js";
 import "./shows.js"
 //You can edit ALL of the code here
+
+//inserts shows.js into the HTML to load the functions into the browser
+document.body.insertBefore(document.createElement("script"), document.body.getElementsByTagName("script")[0]).setAttribute("src", "./shows.js");
+
 const allEpisodes = getAllEpisodes();
 const main = document.querySelector("main");
 const searchBox = document.querySelector("#search-box");
@@ -10,10 +14,12 @@ const resetSearch = document.querySelector("#search-reset");
 const epiCard = document.querySelector(".epi-card");
 const showCard = document.querySelector(".show-card");
 let isShowPage = true;
+let allShows = [];
 
 
 function setup() {
-  makePageMainContent(allEpisodes);
+  allShows = getAllShows();
+  makePageMainContent([getOneShow()]);
   searchBox.addEventListener("input", filterEpisodes);
   selectBox.addEventListener("change", chooseEpisode);
   resetSearch.addEventListener("click", doSearchReset);
@@ -48,7 +54,7 @@ function makePageMainContent(data) {
   main.innerHTML = "";
   selectBox.innerHTML = "";
 
-  makePageForEpisodes(data);
+  makeCardList(data);
   fillSelectBox(data);
 }
 
@@ -68,7 +74,7 @@ function fillSelectBox(contentList) {
   contentList.forEach(content => {
     let option = document.createElement("option");
 
-    option.innerText = `${createEpisodeIdentifier(content)} - ${content.name}`;
+    option.innerText = `${isShowPage ? "" : createEpisodeIdentifier(content) + " - "}${content.name}`;
     option.value = content.id;
   
     if (selectBox.innerHTML === "") {
@@ -84,21 +90,21 @@ function fillSelectBox(contentList) {
 }
 
 
-function makePageForEpisodes(episodeList) {
+function makeCardList(contentList) {
 
-  filterText.textContent = `Showing ${episodeList.length} episode(s) out of ${allEpisodes.length}`
+  filterText.textContent = `Showing ${contentList.length} ${isShowPage ? "show(s)" : "episode(s)"} out of ${isShowPage ? allShows.length : allEpisodes.length}`
 
-  episodeList.forEach(epi => {
-    let cardCopy = epiCard.cloneNode(true);
+  contentList.forEach(content => {
+    let cardCopy = isShowPage ? showCard.cloneNode(true) : cardCopy = epiCard.cloneNode(true);
     let cardTitle = cardCopy.querySelector(".title");
     let cardImage = cardCopy.querySelector(".img-preview");
     let cardSumm = cardCopy.querySelector(".summary");
     let img = document.createElement("img");
 
-    cardTitle.textContent = `${epi.name} - ${createEpisodeIdentifier(epi)}`;
-    img.src = epi.image.medium;
+    cardTitle.textContent = `${content.name}${isShowPage ? "" : " - " + createEpisodeIdentifier(content)}`;
+    img.src = content.image.medium;
     cardImage.append(img);
-    cardSumm.innerHTML = epi.summary;
+    cardSumm.innerHTML = content.summary;
 
     main.append(cardCopy);
   });
