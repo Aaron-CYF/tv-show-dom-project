@@ -12,7 +12,7 @@ var showCardCopy;
 function setup() {
   epiCardCopy = document.querySelector(".epi-card");
   showCardCopy = document.querySelector(".show-card")
-  //makePageForEpisodes(allEpisodes);
+  makePageForEpisodes(allEpisodes);
   searchBox.addEventListener("input", filterEpisodes);
   selectBox.addEventListener("change", chooseEpisode);
   resetSearch.addEventListener("click", doSearchReset);
