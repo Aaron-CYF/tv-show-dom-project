@@ -2,18 +2,17 @@ import "./episodes.js";
 import "./shows.js"
 //You can edit ALL of the code here
 const allEpisodes = getAllEpisodes();
-let main = document.querySelector("main");
-let searchBox = document.querySelector("#search-box");
-let selectBox = document.querySelector("#select-box");
-let filterText = document.querySelector("#filter-text");
-let resetSearch = document.querySelector("#search-reset");
-let epiCardCopy;
-let showCardCopy;
+const main = document.querySelector("main");
+const searchBox = document.querySelector("#search-box");
+const selectBox = document.querySelector("#select-box");
+const filterText = document.querySelector("#filter-text");
+const resetSearch = document.querySelector("#search-reset");
+const epiCard = document.querySelector(".epi-card");
+const showCard = document.querySelector(".show-card");
+let isShowPage = true;
 
 
 function setup() {
-  epiCardCopy = document.querySelector(".epi-card");
-  showCardCopy = document.querySelector(".show-card")
   makePageMainContent(allEpisodes);
   searchBox.addEventListener("input", filterEpisodes);
   selectBox.addEventListener("change", chooseEpisode);
@@ -23,7 +22,8 @@ function setup() {
 
 function filterEpisodes(event) {
   makePageMainContent(allEpisodes.filter(epi => {
-    return epi.name.toLowerCase().includes(event.target.value.toLowerCase()) || epi.summary.toLowerCase().includes(event.target.value.toLowerCase());
+    return epi.name.toLowerCase().includes(event.target.value.toLowerCase()) 
+    || epi.summary.toLowerCase().includes(event.target.value.toLowerCase());
   }));
 }
 
@@ -89,10 +89,10 @@ function makePageForEpisodes(episodeList) {
   filterText.textContent = `Showing ${episodeList.length} episode(s) out of ${allEpisodes.length}`
 
   episodeList.forEach(epi => {
-    let epiCard = epiCardCopy.cloneNode(true);
-    let cardTitle = epiCard.querySelector(".title");
-    let cardImage = epiCard.querySelector(".img-preview");
-    let cardSumm = epiCard.querySelector(".summary");
+    let cardCopy = epiCard.cloneNode(true);
+    let cardTitle = cardCopy.querySelector(".title");
+    let cardImage = cardCopy.querySelector(".img-preview");
+    let cardSumm = cardCopy.querySelector(".summary");
     let img = document.createElement("img");
 
     cardTitle.textContent = `${epi.name} - ${createEpisodeIdentifier(epi)}`;
@@ -100,7 +100,7 @@ function makePageForEpisodes(episodeList) {
     cardImage.append(img);
     cardSumm.innerHTML = epi.summary;
 
-    main.append(epiCard);
+    main.append(cardCopy);
   });
 }
 
