@@ -117,7 +117,7 @@ function makeCardList(contentList = allContent) {
     let img = document.createElement("img");
 
     cardTitle.textContent = `${content.name}${isShowPage ? "" : " - " + createEpisodeIdentifier(content)}`;
-    if (content.image && i !== 6) {
+    if (content.image) {
       img.src = content.image.medium;
       cardImage.append(img);
     } else {
