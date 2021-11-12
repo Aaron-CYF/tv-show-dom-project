@@ -7,12 +7,13 @@ document.body.insertBefore(document.createElement("script"), document.body.getEl
 
 const allEpisodes = [...getAllEpisodes()];
 const main = document.querySelector("main");
+const title = document.querySelector("h1");
 const searchBox = document.querySelector("#search-box");
 const selectBox = document.querySelector("#select-box");
+const showSelect = document.querySelector("#show-select");
 const filterText = document.querySelector("#filter-text");
 const resetSearch = document.querySelector("#search-reset");
-const epiCard = document.querySelector(".epi-card");
-const showCard = document.querySelector(".show-card");
+const contentCard = document.querySelector(".content-card");
 let isShowPage = true;
 let allShows = [];
 let allContent = [...allEpisodes];
@@ -22,19 +23,21 @@ function setup() {
   allShows = [...getAllShows()];
   if (isShowPage) allContent = [...allShows];
   makePageMainContent(allContent);
-  searchBox.addEventListener("input", filterEpisodes);
+  allShows.forEach(buildShowSelect);
+  searchBox.addEventListener("input", filterContent);
   selectBox.addEventListener("change", chooseCard);
+  showSelect.addEventListener("change", chooseShow);
   resetSearch.addEventListener("click", doSearchReset);
   document.querySelector("#mode-switch").addEventListener("click", () => {
     isShowPage = !isShowPage;
     if (isShowPage) allContent = [...allShows]; 
       else allContent = [...allEpisodes];
-    makePageMainContent(allContent);
+    makePageMainContent(allContent, 16);
   });
 }
 
 
-function filterEpisodes(event) {
+function filterContent(event) {
   makePageMainContent(allContent.filter(content => {
     if (isShowPage) {
       return content.name.toLowerCase().includes(event.target.value.toLowerCase()) 
@@ -57,6 +60,19 @@ function chooseCard(event) {
 }
 
 
+function chooseShow(event) {
+}
+
+
+function buildShowSelect(show, index) {
+  let option = document.createElement("option");
+
+  option.innerText = show.name;
+  option.value = index;
+  showSelect.append(option);
+}
+
+
 function doSearchReset() {
   selectBox.children[0].selected = "selected";
   searchBox.value = "";
@@ -64,9 +80,18 @@ function doSearchReset() {
 }
 
 
-function makePageMainContent(data) {
+function makePageMainContent(data, showIndex) {
   main.innerHTML = "";
   selectBox.innerHTML = "";
+
+  if (!isShowPage) {
+    showSelect.parentNode.setAttribute("style", "");
+    showSelect.children[showIndex].selected = "selected";
+    title.insertAdjacentHTML("afterend", "<h2>" + allShows[showIndex].name + "</h2>");
+  } else {
+    showSelect.parentNode.setAttribute("style", "display: none;");
+    if (document.querySelector("h2")) document.querySelector("h2").remove();
+  }
 
   makeCardList(data);
   fillSelectBox(data);
@@ -110,13 +135,20 @@ function makeCardList(contentList = allContent) {
 
   contentList.forEach((content, i) => {
     let cardCopy = document;
-    cardCopy = isShowPage ? epiCard.cloneNode(true) : cardCopy = epiCard.cloneNode(true);
+    cardCopy = contentCard.cloneNode(true);
     let cardTitle = cardCopy.querySelector(".title");
     let cardImage = cardCopy.querySelector(".img-preview");
+    let epiId = cardCopy.querySelector(".epi-id");
     let cardSumm = cardCopy.querySelector(".summary");
+    let cardExtras = cardCopy.querySelector(".extra-data");
+    let cRating = cardExtras.querySelector(".rating");
+    let cGenres = cardExtras.querySelector(".genres");
+    let cStatus = cardExtras.querySelector(".status");
+    let cRuntime = cardExtras.querySelector(".runtime");
     let img = document.createElement("img");
 
-    cardTitle.textContent = `${content.name}${isShowPage ? "" : " - " + createEpisodeIdentifier(content)}`;
+    cardTitle.textContent = content.name;
+    if (content.name.length)
     if (content.image) {
       img.src = content.image.medium;
       cardImage.append(img);
@@ -135,19 +167,25 @@ function makeCardList(contentList = allContent) {
     cardSumm.innerHTML = `<summary>${isShowPage ? "TV Show" : "Episode"} Summary</summary>` + content.summary;
 
     if (isShowPage) {
-      let cardExtras = cardCopy.querySelector(".extra-data");
-      let cRating = cardExtras.querySelector(".rating");
-      let cGenres = cardExtras.querySelector(".genres");
-      let cStatus = cardExtras.querySelector(".status");
-      let cRuntime = cardExtras.querySelector(".runtime");
-
-      cRating.innerText = "Average rating: " + content.rating.average;
-      cGenres.innerText = "Genres: " + content.genres.join(", ");
+      cRating.innerText = "Average rating: " + content.rating ? content.rating.average : undefined;
+      cGenres.innerText = "Genres: " + Array.isArray(content.genres) ? content.genres.join(", ") : undefined;
       cStatus.innerText = "Status: " + content.status;
-      cRuntime.innerText = `Runtime: ${content.runtime}mins per episode`;
+      cRuntime.innerText = `Runtime: ${content.runtime ? content.runtime + "mins per episode" : undefined}`;
+      epiId.remove();
+    } else {
+      epiId.innerText = createEpisodeIdentifier(content);
+      cardExtras.childNodes.forEach(child => child.remove());
+      cardExtras.remove();
     }
 
     main.append(cardCopy);
+    if (!isShowPage) {
+      let fontSize = 1.25;
+      while (cardTitle.clientHeight > 25 && fontSize > 0) {
+        fontSize -= 0.125;
+        cardTitle.style["font-size"] = fontSize + "em";
+      }
+    }
   });
 }
 

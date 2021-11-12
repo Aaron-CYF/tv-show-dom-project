@@ -14,6 +14,7 @@ html, body {
 
 header {
   padding: 1.5em;
+  padding-bottom: 1em;
   display: flex;
   flex-direction: column;
   margin: auto;
@@ -29,13 +30,12 @@ header * {
   flex-direction: row;
 }
 
-#search > select, #search > input {
+#search > select, #search > input, #show-select {
   width: 20ch;
   padding: 0.25ch;
-  margin: 0.25rem;
 }
 
-#search > button {
+#search * {
   margin: 0.25rem;
 }
 
@@ -61,7 +61,7 @@ main {
   justify-content: space-evenly;
 }
 
-.epi-card {
+.content-card {
   margin: 2em;
   width: 35ch;
   padding-top: 1.5rem;
@@ -71,44 +71,31 @@ main {
   border-radius: 30px;
 }
 
-.epi-card .title {
+.content-card .title {
   margin-bottom: 1rem;
   text-align: center;
+  font-size: 1.25em;
+  font-weight: bold;
 }
 
-.epi-card .img-preview {
+ .content-card .epi-id {
+   text-align: center;
+   margin-top: -0.5em;
+ }
+
+.content-card .img-preview {
   display: flex;
   justify-content: center;
 }
 
-.epi-card img {
+.content-card img {
   margin-left: auto;
   margin-right: auto;
   border-radius: 30px;
 }
 
-.epi-card .summary {
+.content-card .summary {
   text-align: justify;
-}
-
-.show-card {
-  margin: 2em;
-  padding-top: 1.5rem;
-  padding-bottom: 1.5rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
-.show-card .img-preview {
-  width: fit-content;
-}
-
-.show-card .img-preview, .show-card .summary, .show-card details {
-  float: left;
-}
-
-.show-card .summary {
-  width: 50%;
 }
 
 .img-missing {
