@@ -3,19 +3,57 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TV Show Project | My Name (My GitHub username)</title>
+    <title>TV Show Project | Aaron Brush (Aaron-CYF)</title>
     <link href="style.css" rel="stylesheet" />
     <link rel="icon" href="/favicon.ico" type="image/x-icon" />
   </head>
 
   <body>
-    <div id="root">
+
+    <div id="head-main">
+      <header class="dp04">
+        <h1>TV Shows Episode Guide</h1>
+        <div id="search">
+          <h3>Search:</h3>
+          <p id="filter-text"></p>
+          <div></div>
+          <input id="search-box" type="text">
+          <select id="select-box"></select>
+          <button id="search-reset">clear search</button>
+          <button id="mode-switch">switch mode</button>
+          <div id="spacer"></div>
+          <div id="spacer"></div>
+          <div>
+            <p>Select show:</p>
+            <div></div>
+            <select id="show-select"></select>
+          </div>
+        </div>
+      </header>
+      <main>
+        <article class="content-card dp12">
+          <section class="title"></section>
+          <figure class="img-preview"></figure>
+          <p class="epi-id"></p>
+          <section class="extra-data dp24">
+            <p class="rating"></p>
+            <p class="genres"></p>
+            <p class="status"></p>
+            <p class="runtime"></p>
+          </section>
+          <details class="summary"></details>
+        </article>
+      </main>
+      <div id="spacer"></div>
     </div>
+    <footer class="dp04">
+      <p>Made with data from <a href="https://tvmaze.com/" target="_blank">TVMaze</a></p>
+    </footer>
 
     <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
     <script src="episodes.js"></script>
 
     <!-- Loads YOUR javascript code -->
-    <script src="script.js"></script>
+    <script type="module" src="script.js"></script>
   </body>
 </html>
