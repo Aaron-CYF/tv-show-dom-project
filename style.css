@@ -78,10 +78,14 @@ main {
   font-weight: bold;
 }
 
- .content-card .epi-id {
-   text-align: center;
-   margin-top: -0.5em;
- }
+.show-title:hover {
+  text-decoration: underline;
+}
+
+.content-card .epi-id {
+  text-align: center;
+  margin-top: -0.5em;
+}
 
 .content-card .img-preview {
   display: flex;
@@ -92,6 +96,12 @@ main {
   margin-left: auto;
   margin-right: auto;
   border-radius: 30px;
+}
+
+.show-image:hover {
+  border-radius: 30px;
+  outline: 3px solid whitesmoke;
+  cursor: pointer;
 }
 
 .content-card .summary {

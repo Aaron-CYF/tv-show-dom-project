@@ -5,7 +5,7 @@ import "./shows.js"
 //inserts shows.js into the HTML to load the functions into the browser
 document.body.insertBefore(document.createElement("script"), document.body.getElementsByTagName("script")[0]).setAttribute("src", "./shows.js");
 
-const allEpisodes = [...getAllEpisodes()];
+const allEpisodes = [/*...getAllEpisodes()*/];
 const main = document.querySelector("main");
 const title = document.querySelector("h1");
 const searchBox = document.querySelector("#search-box");
@@ -20,19 +20,18 @@ let allContent = [...allEpisodes];
 
 
 function setup() {
-  allShows = [...getAllShows()];
+  allShows = [...getAllShows()].sort((a, b) => a.name.toLowerCase() > b.name.toLowerCase() ? 1 : -1);
   if (isShowPage) allContent = [...allShows];
   makePageMainContent(allContent);
   allShows.forEach(buildShowSelect);
+  generateDisplayEpisodeEventListener(showSelect, "change");
   searchBox.addEventListener("input", filterContent);
   selectBox.addEventListener("change", chooseCard);
-  showSelect.addEventListener("change", chooseShow);
   resetSearch.addEventListener("click", doSearchReset);
   document.querySelector("#mode-switch").addEventListener("click", () => {
-    isShowPage = !isShowPage;
-    if (isShowPage) allContent = [...allShows]; 
-      else allContent = [...allEpisodes];
-    makePageMainContent(allContent, 16);
+    isShowPage = true;
+    allContent = [...allShows]; 
+    makePageMainContent(allContent);
   });
 }
 
@@ -60,15 +59,11 @@ function chooseCard(event) {
 }
 
 
-function chooseShow(event) {
-}
-
-
-function buildShowSelect(show, index) {
+function buildShowSelect(show) {
   let option = document.createElement("option");
 
   option.innerText = show.name;
-  option.value = index;
+  option.value = show.id;
   showSelect.append(option);
 }
 
@@ -84,16 +79,17 @@ function makePageMainContent(data, showIndex) {
   main.innerHTML = "";
   selectBox.innerHTML = "";
 
+  if (document.querySelector("h2")) document.querySelector("h2").remove();
+
   if (!isShowPage) {
     showSelect.parentNode.setAttribute("style", "");
     showSelect.children[showIndex].selected = "selected";
     title.insertAdjacentHTML("afterend", "<h2>" + allShows[showIndex].name + "</h2>");
   } else {
     showSelect.parentNode.setAttribute("style", "display: none;");
-    if (document.querySelector("h2")) document.querySelector("h2").remove();
   }
 
-  makeCardList(data);
+  makeCardList(data, showIndex);
   fillSelectBox(data);
 }
 
@@ -129,13 +125,32 @@ function fillSelectBox(contentList) {
 }
 
 
-function makeCardList(contentList = allContent) {
+function generateDisplayEpisodeEventListener(element, eventType, showID, showIndex) {
+  element.addEventListener(eventType, event => {
+    if (event.currentTarget.tagName.toLowerCase() === "select") {
+      showIndex = event.currentTarget.selectedIndex;
+      showID = event.currentTarget.value;
+    }
+    if (!allEpisodes[showIndex])
+      getEpisodesFromAPI(showID).then(data => {
+        allEpisodes[showIndex] = data;
+        isShowPage = false;
+        makePageMainContent(allEpisodes[showIndex], showIndex);
+      });
+    else {
+      isShowPage = false;
+      makePageMainContent(allEpisodes[showIndex], showIndex);
+    }
+  });
+}
 
-  filterText.textContent = `Showing ${contentList.length} ${isShowPage ? "show(s)" : "episode(s)"} out of ${isShowPage ? allShows.length : allEpisodes.length}`
 
-  contentList.forEach((content, i) => {
-    let cardCopy = document;
-    cardCopy = contentCard.cloneNode(true);
+function makeCardList(contentList, showIndex) {
+
+  filterText.textContent = `Showing ${contentList.length} ${isShowPage ? "show(s)" : "episode(s)"} out of ${isShowPage ? allShows.length : allEpisodes[showIndex].length}`
+
+  contentList.forEach((content, index) => {
+    let cardCopy = contentCard.cloneNode(true);
     let cardTitle = cardCopy.querySelector(".title");
     let cardImage = cardCopy.querySelector(".img-preview");
     let epiId = cardCopy.querySelector(".epi-id");
@@ -148,9 +163,15 @@ function makeCardList(contentList = allContent) {
     let img = document.createElement("img");
 
     cardTitle.textContent = content.name;
-    if (content.name.length)
+    if (isShowPage) {
+      generateDisplayEpisodeEventListener(cardTitle, "click", content.id, index);
+      cardTitle.style.cursor = "pointer";
+      cardTitle.classList.add("show-title");
+    }
+
     if (content.image) {
       img.src = content.image.medium;
+      if (isShowPage) img.classList.add("show-image");
       cardImage.append(img);
     } else {
       cardImage.innerHTML = `
@@ -163,12 +184,16 @@ function makeCardList(contentList = allContent) {
           <p>Image missing.</p>
         </div>
       </div>`;
+      if (isShowPage) cardImage.querySelector(".img-missing").parentNode.classList.add("show-image");
     }
+
+    if (isShowPage) generateDisplayEpisodeEventListener(cardImage, "click", content.id, index);
+
     cardSumm.innerHTML = `<summary>${isShowPage ? "TV Show" : "Episode"} Summary</summary>` + content.summary;
 
     if (isShowPage) {
       cRating.innerText = "Average rating: " + content.rating ? content.rating.average : undefined;
-      cGenres.innerText = "Genres: " + Array.isArray(content.genres) ? content.genres.join(", ") : undefined;
+      cGenres.innerText = "Genres: " + ((Array.isArray(content.genres)) ? content.genres.join(", ") : undefined);
       cStatus.innerText = "Status: " + content.status;
       cRuntime.innerText = `Runtime: ${content.runtime ? content.runtime + "mins per episode" : undefined}`;
       epiId.remove();
@@ -179,14 +204,25 @@ function makeCardList(contentList = allContent) {
     }
 
     main.append(cardCopy);
-    if (!isShowPage) {
-      let fontSize = 1.25;
-      while (cardTitle.clientHeight > 25 && fontSize > 0) {
-        fontSize -= 0.125;
-        cardTitle.style["font-size"] = fontSize + "em";
-      }
+    let fontSize = 1.25;
+    while (cardTitle.clientHeight > 25 && fontSize > 0) {
+      fontSize -= 0.125;
+      cardTitle.style.fontSize = fontSize + "em";
     }
   });
+}
+
+async function getEpisodesFromAPI(showID) {
+  let URI = "http://api.tvmaze.com/shows/" + showID + "/episodes";
+  let data;
+  
+  try {
+    let response = await fetch(URI);
+    data = await response.json();
+  } catch(error) {
+    console.log("error:", error);
+  }
+  return data;
 }
 
 window.onload = setup;
